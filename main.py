@@ -1,4 +1,3 @@
-import asyncio
 import pymsteams
 import config
 
@@ -7,16 +6,15 @@ from fastapi import FastAPI
 app = FastAPI(title="Microsoft Teams Notification", version="1.0", redoc_url=None)
 
 
-@app.post("/notify/")
+@app.post("/notify/", status_code=201)
 async def notify(message: str):
-    loop = asyncio.get_event_loop()
 
-    # the async_connectorcard object is used instead of the normal one.
-    messageboxes = pymsteams.async_connectorcard(config.Microsoft_Webhook_URL)
+    messageboxes = pymsteams.connectorcard(config.Microsoft_Webhook_URL)
 
-    # all formatting for the message should be the same
+    # Add text to the message.
     messageboxes.text(message)
 
-    # to send the message, pass to the event loop
-    loop.run_until_complete(messageboxes.send())
+    # send the message.
+    messageboxes.send()
+
     return "Message send"
