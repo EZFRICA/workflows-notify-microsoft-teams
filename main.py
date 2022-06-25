@@ -1,5 +1,6 @@
 import pymsteams
 import config
+import uvicorn
 
 from fastapi import FastAPI
 
@@ -18,3 +19,6 @@ async def notify(message: str):
     messageboxes.send()
 
     return "Message send"
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8080)
